@@ -40,6 +40,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
                 implementation("com.google.android.material:material:1.2.1")
                 implementation("io.ktor:ktor-client-android:$ktor_version")
                 implementation("com.squareup.sqldelight:android-driver:1.4.3")

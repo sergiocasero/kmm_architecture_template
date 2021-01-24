@@ -1,5 +1,6 @@
 package com.worldline.androidApp.view.activity
 
+import android.util.Log
 import com.worldline.androidApp.R
 import com.worldline.shared.data.local.DbDriver
 import com.worldline.shared.data.local.SQLDelightLocal
@@ -34,6 +35,6 @@ class PoiListActivity : RootActivity<PoiListView>(), PoiListView {
     }
 
     override fun showPoiList(poiList: List<Poi>) {
-        println(poiList)
+        Log.i(this::class.java.simpleName, poiList.toString())
     }
 }

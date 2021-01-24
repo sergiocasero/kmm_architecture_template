@@ -1,11 +1,38 @@
 package com.worldline.shared.data.remote
 
+import com.worldline.shared.data.model.dto.PoisResponseDto
+import com.worldline.shared.data.model.dto.toModel
 import com.worldline.shared.domain.Either
 import com.worldline.shared.domain.Result
 import com.worldline.shared.domain.model.Poi
+import io.ktor.client.*
+import io.ktor.client.features.*
+import io.ktor.client.features.json.*
+import io.ktor.client.features.json.serializer.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 
 class KtorRemote : Remote {
-    override suspend fun getPoiList(): Either<Result.Error, List<Poi>> {
-        TODO("Not yet implemented")
+
+    private val client = HttpClient {
+        defaultRequest {
+            val endpointBuilder = URLBuilder("https://t21services.herokuapp.com/")
+            url {
+                protocol = endpointBuilder.protocol
+                host = endpointBuilder.host
+            }
+        }
+
+        install(JsonFeature) {
+            serializer = KotlinxSerializer()
+        }
     }
+
+    override suspend fun getPoiList(): Either<Result.Error, List<Poi>> =
+        try {
+            val response = client.get<PoisResponseDto> { url { encodedPath = "points" } }
+            Either.Right(response.list.map { it.toModel() })
+        } catch (e: Exception) {
+            Either.Left(Result.Error.Default)
+        }
 }

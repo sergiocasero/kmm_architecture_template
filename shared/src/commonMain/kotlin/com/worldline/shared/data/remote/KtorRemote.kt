@@ -28,11 +28,14 @@ class KtorRemote : Remote {
         }
     }
 
-    override suspend fun getPoiList(): Either<Result.Error, List<Poi>> =
-        try {
-            val response = client.get<PoisResponseDto> { url { encodedPath = "points" } }
-            Either.Right(response.list.map { it.toModel() })
-        } catch (e: Exception) {
-            Either.Left(Result.Error.Default)
-        }
+    override suspend fun getPoiList(): Either<Result.Error, List<Poi>> = withEither {
+        val response = client.get<PoisResponseDto> { url { encodedPath = "points" } }
+        response.list.map { it.toModel() }
+    }
+
+    private suspend fun <T> withEither(block: suspend () -> T): Either<Result.Error, T> = try {
+        Either.Right(block())
+    } catch (e: Exception) {
+        Either.Left(Result.Error.Default)
+    }
 }

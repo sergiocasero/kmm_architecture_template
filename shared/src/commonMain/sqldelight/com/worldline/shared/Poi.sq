@@ -1,0 +1,12 @@
+CREATE TABLE PoiVo(
+    id TEXT,
+    title TEXT,
+    latitude REAL,
+    longitude REAL
+);
+
+selectAll:
+SELECT * FROM PoiVo;
+
+addOrUpdate:
+INSERT OR REPLACE INTO PoiVo(id, title, latitude, longitude) VALUES ?;

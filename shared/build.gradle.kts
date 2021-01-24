@@ -5,6 +5,7 @@ plugins {
     kotlin("plugin.serialization") version "1.4.10"
     id("com.android.library")
     id("kotlin-android-extensions")
+    id("com.squareup.sqldelight")
 }
 
 group = "com.worldline"
@@ -41,6 +42,7 @@ kotlin {
             dependencies {
                 implementation("com.google.android.material:material:1.2.1")
                 implementation("io.ktor:ktor-client-android:$ktor_version")
+                implementation("com.squareup.sqldelight:android-driver:1.4.3")
             }
         }
         val androidTest by getting {
@@ -52,9 +54,16 @@ kotlin {
         val iosMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktor_version")
+                implementation("com.squareup.sqldelight:native-driver:1.4.3")
             }
         }
         val iosTest by getting
+    }
+}
+
+sqldelight {
+    database("pois") { // This will be the name of the generated database class.
+        packageName = "com.worldline.shared"
     }
 }
 

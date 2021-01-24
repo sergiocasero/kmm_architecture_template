@@ -1,6 +1,7 @@
 package com.worldline.androidApp.view.activity
 
 import com.worldline.androidApp.R
+import com.worldline.shared.data.local.DbDriver
 import com.worldline.shared.data.local.SQLDelightLocal
 import com.worldline.shared.data.remote.KtorRemote
 import com.worldline.shared.data.repository.CommonPoiRepository
@@ -13,7 +14,10 @@ class PoiListActivity : RootActivity<PoiListView>(), PoiListView {
 
     override val presenter by lazy {
         PoiListPresenter(
-            repository = CommonPoiRepository(local = SQLDelightLocal(), remote = KtorRemote()),
+            repository = CommonPoiRepository(
+                local = SQLDelightLocal(DbDriver(this)),
+                remote = KtorRemote()
+            ),
             executor = Executor(),
             view = this
         )
